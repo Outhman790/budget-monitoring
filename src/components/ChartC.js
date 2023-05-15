@@ -44,11 +44,11 @@ export default function ChartC({ data }) {
           {transactions.length > 1 ? (
             <h4 className="h4">
               You should try to save in
-              <span className="danger"> {categories[0]}</span>
+              <span className="danger"> {categories[1]}</span>
               {transactions.length <= 2 ? (
                 "."
               ) : (
-                <span className="danger"> and {categories[1]}</span>
+                <span className="danger"> and {categories[0]}</span>
               )}
             </h4>
           ) : (
