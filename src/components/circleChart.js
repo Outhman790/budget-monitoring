@@ -21,7 +21,7 @@ function selectionSort(arr) {
   return arr;
 }
 
-export default function ChartC({ data }) {
+export default function ChartC() {
   const { transactions } = useContext(GlobalContext);
   const expenses = transactions
     .filter((transaction) => transaction.type === "Expense")
@@ -35,6 +35,41 @@ export default function ChartC({ data }) {
     )
     .map((transaction) => transaction.category);
   console.log(categories);
+
+  // Build chart data from transactions
+  const expenseTransactions = transactions.filter(
+    (transaction) => transaction.type === "Expense"
+  );
+  const categoryTotals = expenseTransactions.reduce((acc, transaction) => {
+    acc[transaction.category] = (acc[transaction.category] || 0) + transaction.amount;
+    return acc;
+  }, {});
+
+  const data = {
+    labels: Object.keys(categoryTotals),
+    datasets: [
+      {
+        data: Object.values(categoryTotals),
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#4BC0C0",
+          "#9966FF",
+          "#FF9F40",
+        ],
+      },
+    ],
+  };
+
+  // Don't render chart if no data
+  if (Object.keys(categoryTotals).length === 0) {
+    return (
+      <div className="canva">
+        <p>No expense data to display</p>
+      </div>
+    );
+  }
 
   return (
     <div className="canva">
